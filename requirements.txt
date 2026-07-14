@@ -6,4 +6,4 @@ python-dotenv
 requests
 
 gunicorn
-eventlet
+gevent`ngevent-websocket
