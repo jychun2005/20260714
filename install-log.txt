@@ -1,0 +1,62 @@
+﻿
+AI 教學工具一鍵安裝程式
+本程式會檢查已安裝的軟體，已存在的項目不會重複安裝。
+安裝記錄：C:\20260714\install-log.txt
+
+正在檢查：Node.js LTS ...
+開始安裝：Node.js LTS
+安裝失敗或需要人工確認：Node.js LTS（錯誤碼：-1978335159）
+
+正在檢查：Git ...
+已存在，略過安裝：Git
+
+正在檢查：Notepad++ ...
+已存在，略過安裝：Notepad++
+
+正在檢查：Python 3.12 ...
+已存在，略過安裝：Python 3.12
+
+正在檢查：Visual Studio Code ...
+已存在，略過安裝：Visual Studio Code
+
+正在檢查：ChatGPT ...
+已存在，略過安裝：ChatGPT
+
+正在檢查：Claude ...
+已存在，略過安裝：Claude
+
+正在檢查：Claude Code ...
+開始安裝：Claude Code
+安裝完成：Claude Code
+
+開始安裝：OpenAI Codex CLI
+Codex CLI 安裝完成。重新開啟 Terminal 後輸入 codex 即可啟動。
+
+開始安裝：Google Antigravity CLI（官方，指令 agy）
+Antigravity CLI 安裝完成。重新開啟 Terminal 後輸入 agy 即可啟動。
+
+Google Antigravity（桌面 IDE，選配）
+Google Antigravity 請由官方下載頁安裝，以確保取得正確的 Windows x64 或 ARM64 版本：
+https://antigravity.google/download
+
+Codex 桌面板（進階／選配）
+OpenAI 官方桌面版目前僅 macOS；Windows 沒有官方桌面版。終端機版 Codex CLI 上面已幫你裝好。
+若你（在老師說明後）想要 Windows 桌面板，可到這個「社群非官方重build」的 releases 頁，下載 Codex-win-x64 的 zip，解壓即用：
+https://github.com/Haleclipse/CodexDesktop-Rebuild/releases
+⚠️ 這是社群版、非 OpenAI 官方，會經手你的金鑰與程式碼，請自行斟酌是否安裝。
+
+CLAW 小龍蝦
+CLAW 尚未自動執行未知腳本。請將已確認安全的 CLAW 資料夾放在本安裝器旁邊的 CLAW 資料夾，再重新執行。
+這樣可以避免學員在沒有檢查內容時，直接執行來源不明的程式。
+尚未偵測到旁邊的 CLAW 資料夾。
+
+安裝後測試指令：
+node --version
+git --version
+python --version
+code --version
+claude --version
+codex --version
+agy --version
+
+第一階段安裝完成。請關閉目前所有 Terminal，再重新開啟，讓 PATH 設定生效。

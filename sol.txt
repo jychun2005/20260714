@@ -1,0 +1,86 @@
+① GitHub：建立倉庫
+程式碼的雲端家
+登入 github.com，右上 + → New repository。
+取名（例 liang-translator），選 Private（私人），建立。
+github.com/new
+Create a new repository
+Repository name： liang-translator
+🔒 Private（私人）
+Create repository
+模擬畫面：GitHub 建立新倉庫（示意，非真實截圖）① 上傳程式碼 · 網頁上傳法（最適合新手）
+不用學 Git 指令，用滑鼠拖檔就好
+📦 先準備好資料夾：若你是用 CH19 生成器下載的 .zip，先解壓縮成一個資料夾（裡面有 app.py、providers.py、templates／、static／… 等）。等一下要上傳的就是這些檔。
+打開你剛建立的 repo 頁面（github.com/你的帳號/liang-translator）。
+點畫面上的 Add file → Upload files。
+把資料夾裡的檔案全選、拖進網頁那塊虛線框（連 templates／、static／ 資料夾一起拖，GitHub 會自動保留結構）。
+下方綠色 Commit changes 按下去，等跑完，檔案就上去了。
+github.com/你的帳號/liang-translator/upload
+Drag files here to add them to your repository
+⬆ 把 app.py、providers.py、templates／、static／… 拖進這裡
+Commit changes
+模擬畫面：GitHub 網頁上傳（示意，非真實截圖）① 上傳前：千萬別把 .env 傳上去
+金鑰外流事小，帳單爆掉事大
+🚨 網頁上傳的人特別注意：用「拖檔上傳」時，.gitignore 不會幫你擋 .env！（.gitignore 只在用 Git 指令時才生效。）所以拖檔前，手動把 .env 這個檔挑掉、不要拖進去。
+🔑 為什麼這麼嚴重：.env 裡是你的 Gemini／Tavily 金鑰。傳上 GitHub 等於公開給全世界，可能被拿去亂用、把你的額度或帳單燒爆。金鑰正確的家是 Render 儀表板（下一步就教）。
+✅ 上傳後自我檢查：到 repo 的檔案列表看看有沒有 .env。有的話 → 點進去 → 右上角垃圾桶 → Delete 刪掉。（.env.example 是空白範例、沒有金鑰，留著沒關係。）
+⌨️ 會用 Git 指令的人：git init → git add . → git commit → git push 即可，此時 .gitignore 會自動排除 .env。不熟就用上面的網頁上傳法，或把這幾行貼給 AI 請它教你逐步操作。② Render：建立服務
+連結 GitHub 專案
+登入 render.com（用 GitHub 帳號）。
+New + → Web Service。
+選剛剛的 GitHub 倉庫，按 Connect。
+dashboard.render.com/select-repo
+Create a new Web Service
+🔗 你的帳號 / liang-translator
+🔗 你的帳號 / 其他倉庫…
+Connect
+模擬畫面：Render 選擇 GitHub 倉庫（示意，非真實截圖）
+🔗 這一步看不到你的 GitHub 倉庫？代表 Render 還沒連上你的 GitHub。到 Render 右上角頭像 → Account Settings，往下拉找到 Git Deployment Credentials（GitHub 連結區），點「連結／Connect GitHub」授權你的帳號；授權後回到這一頁，你的倉庫就會出現，再按 Connect。② 基本設定
+填對這幾格
+欄位	填什麼
+Region	Singapore（離台灣近）
+Branch	main
+Build Command	pip install -r requirements.txt
+Start Command	python app.py
+Instance Type	Free
+② 設定環境變數（關鍵！）
+金鑰放這裡，不進程式碼
+往下找到 Environment Variables，把金鑰一組一組加進去：
+
+Key	Value
+GEMINI_API_KEY	你的 Gemini 金鑰
+TAVILY_API_KEY	你的 Tavily 金鑰（選填）
+OPENAI_API_KEY	你的 OpenAI／Groq／DeepSeek 金鑰（選填；填了整站訪客免自填就能用 OpenAI 相容服務）
+🔐 這就是為什麼程式用 os.getenv()——它會來這裡讀，金鑰不出現在程式碼或 GitHub。
+💡 加了 OPENAI_API_KEY 這步驟跟 Gemini 完全一樣：New → Key/Value → Save。填了它，App 選「OpenAI 相容」時金鑰欄可留空（伺服器共用）。⚠️ OpenAI 是付費 API，記得去 OpenAI 帳戶設 Usage limit。② 部署！
+按下去，等 2–5 分鐘
+點最下方 Create Web Service。
+Render 開始安裝套件、啟動，看 log 跑。
+狀態變 Live（綠色）就上線了！
+頁面上方有你的網址：https://xxx.onrender.com，複製起來。
+dashboard.render.com/web/liang-translator
+liang-translator ● Live
+狀態：Live　部署成功 ✓
+https://你的專案.onrender.com
+模擬畫面：Render 狀態 Live 與你的網址（示意，非真實截圖）之後怎麼更新？
+push 就自動部署
+改程式 → 上傳/push 到 GitHub
+        → Render 偵測到變更
+        → 自動重新部署（約 2–5 分鐘）
+        → 網址上就是新版
+改了看不到？PWA 有快取——把 sw.js 的版本號 +1、手機重新整理兩次。常見部署問題
+上不了線先看這
+Build 失敗？
+
+多半是 requirements.txt 少套件或打錯字，看 log 補上。
+
+啟動就掛？
+
+確認 Start Command、app.py 用環境變數 PORT。
+
+功能沒反應？
+
+檢查環境變數金鑰有沒有填、有沒有拼錯。
+
+第一次好慢？
+
+免費方案喚醒中，等 30–60 秒。
