@@ -4,3 +4,6 @@ flask-socketio
 simple-websocket
 python-dotenv
 requests
+
+gunicorn
+eventlet
