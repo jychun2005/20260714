@@ -1,4 +1,4 @@
-/* 亮言 · 即時翻譯 — Service Worker (PWA)
+/* 益言 · 即時翻譯 — Service Worker (PWA)
    網路優先 (network-first)：線上一律拿最新版，離線才用快取，避免更新被舊快取卡住。 */
 const CACHE = 'liang-translate-v11';
 
