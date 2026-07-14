@@ -1,4 +1,4 @@
-import os
+﻿import os
 import sys
 import asyncio
 import threading
@@ -421,7 +421,7 @@ def api_weather():
             "daily": "temperature_2m_max,temperature_2m_min,precipitation_probability_max",
             "timezone": "auto", "forecast_days": 1,
         }, timeout=8).json()
-        cur = w.get("current") or {}
+        if w.get("error"): return jsonify({"ok": False, "error": f"Open-Meteo: {w.get('reason', '未知錯誤')}"}), 400`n        cur = w.get("current") or {}
         daily = w.get("daily") or {}
         code = cur.get("weather_code")
         temp = cur.get("temperature_2m")

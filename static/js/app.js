@@ -734,7 +734,7 @@ async function fetchWeather(payload) {
         const rows = [
             `<div class="wx-place">${escapeHtml(d.place)}</div>`,
             `<div class="wx-temp">${Math.round(d.temp)}°C　${escapeHtml(d.desc)}</div>`,
-            `<div class="wx-sub">體感 ${Math.round(d.feels)}°C · 濕度 ${d.humidity}%` +
+            `<div class="wx-sub">體感 ${Math.round(d.feels)}°C · 濕度 ${d.humidity != null ? d.humidity : '--'}%` +
                 (d.hi != null ? ` · 高${Math.round(d.hi)}° 低${Math.round(d.lo)}°` : '') +
                 (d.pop != null ? ` · 降雨 ${d.pop}%` : '') + `</div>`,
             `<div class="wx-advice">${escapeHtml(d.advice)}</div>`,
