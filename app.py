@@ -396,24 +396,29 @@ def api_weather():
         # 選填：若有 OpenWeatherMap 金鑰就改用 OWM（否則走免金鑰 Open-Meteo）
         owm_key = (data.get('owm_key') or '').strip()
         if owm_key:
-            o = requests.get("https://api.openweathermap.org/data/2.5/weather", params={
-                "lat": lat, "lon": lon, "appid": owm_key, "units": "metric", "lang": "zh_tw",
-            }, timeout=8).json()
-            if str(o.get("cod")) == "200":
-                main = o.get("main") or {}
-                wid = ((o.get("weather") or [{}])[0]).get("id", 800)
-                desc = ((o.get("weather") or [{}])[0]).get("description", "—")
-                raining = wid < 700
-                temp = main.get("temp")
-                return jsonify({
-                    "ok": True, "place": name, "temp": temp,
-                    "feels": main.get("feels_like"), "humidity": main.get("humidity"),
-                    "desc": desc, "pop": None,
-                    "hi": main.get("temp_max"), "lo": main.get("temp_min"),
-                    "advice": _weather_advice(61 if raining else 0, temp, None),
-                    "source": "owm",
-                })
-            # OWM 失敗就繼續走 Open-Meteo
+            try:
+                o = requests.get("https://api.openweathermap.org/data/2.5/weather", params={
+                    "lat": lat, "lon": lon, "appid": owm_key, "units": "metric", "lang": "zh_tw",
+                }, timeout=8).json()
+                if str(o.get("cod")) == "200":
+                    main = o.get("main") or {}
+                    wid = ((o.get("weather") or [{}])[0]).get("id", 800)
+                    desc = ((o.get("weather") or [{}])[0]).get("description", "")
+                    raining = wid < 700
+                    temp = main.get("temp")
+                    return jsonify({
+                        "ok": True, "place": name, "temp": temp,
+                        "feels": main.get("feels_like"), "humidity": main.get("humidity"),
+                        "desc": desc, "pop": None,
+                        "hi": main.get("temp_max"), "lo": main.get("temp_min"),
+                        "advice": _weather_advice(61 if raining else 0, temp, None),
+                        "source": "owm",
+                    })
+                else:
+                    return jsonify({"ok": False, "error": f"OpenWeatherMap 錯誤: {o.get('message', '金鑰無效或未生效')}"}), 400
+            except Exception as e:
+                return jsonify({"ok": False, "error": f"OpenWeatherMap 連線失敗: {e}"}), 400
+
 
         w = requests.get("https://api.open-meteo.com/v1/forecast", params={
             "latitude": lat, "longitude": lon,
