@@ -1,4 +1,4 @@
-/* =========================================================
+﻿/* =========================================================
    益言 · 即時翻譯  —  前端主程式
    模式：單人 (逐句 STT / Gemini Live 即時) + 面對面 (上下對開翻轉)
    後端：/api/translate 代理 (Gemini / OpenAI 相容)
@@ -40,10 +40,10 @@ const DEFAULT_CFG = {
     wx_place: '',                                       // 天氣：上次查詢地點
 };
 function loadCfg() {
-    try { return { ...DEFAULT_CFG, ...JSON.parse(localStorage.getItem('liang_cfg') || '{}') }; }
+    try { return { ...DEFAULT_CFG, ...JSON.parse(localStorage.getItem('yiyan_cfg') || '{}') }; }
     catch { return { ...DEFAULT_CFG }; }
 }
-function saveCfg(c) { localStorage.setItem('liang_cfg', JSON.stringify(c)); }
+function saveCfg(c) { localStorage.setItem('yiyan_cfg', JSON.stringify(c)); }
 let cfg = loadCfg();
 
 // ---------- DOM ----------
@@ -228,13 +228,13 @@ class Recognizer {
 
 // ---------- 歷史 ----------
 function pushHistory(src, dst) {
-    const h = JSON.parse(localStorage.getItem('liang_hist') || '[]');
+    const h = JSON.parse(localStorage.getItem('yiyan_hist') || '[]');
     h.unshift({ src, dst, t: Date.now() });
-    localStorage.setItem('liang_hist', JSON.stringify(h.slice(0, 100)));
+    localStorage.setItem('yiyan_hist', JSON.stringify(h.slice(0, 100)));
 }
 function renderHistory() {
     const list = $('historyList');
-    const h = JSON.parse(localStorage.getItem('liang_hist') || '[]');
+    const h = JSON.parse(localStorage.getItem('yiyan_hist') || '[]');
     if (!h.length) { list.innerHTML = '<div class="history-empty">尚無紀錄</div>'; return; }
     list.innerHTML = h.map(x =>
         `<div class="history-item"><div class="src">${escapeHtml(x.src)}</div><div class="dst">${escapeHtml(x.dst)}</div></div>`
@@ -510,7 +510,7 @@ $('cfg_save').addEventListener('click', () => {
    ========================================================= */
 $('historyBtn').addEventListener('click', () => { renderHistory(); $('historyModal').classList.remove('hidden'); });
 $('hist_close').addEventListener('click', () => $('historyModal').classList.add('hidden'));
-$('hist_clear').addEventListener('click', () => { localStorage.removeItem('liang_hist'); renderHistory(); });
+$('hist_clear').addEventListener('click', () => { localStorage.removeItem('yiyan_hist'); renderHistory(); });
 
 /* =========================================================
    拍照翻譯 / 上傳檔案翻譯 (摘要 + 翻譯)
@@ -822,7 +822,7 @@ $('ask_close').addEventListener('click', () => { stopAllAudio(); setAskSpeakBtn(
    啟動
    ========================================================= */
 applyTheme(cfg.theme);                          // 套用上次選的背景風格
-fillSelect($('vision_target'), cfg.s_langA);   // 拍照/檔案：預設翻成你的語言
+fillSelect($('vision_target'), cfg.s_langB);   // 拍照/檔案：預設翻成你的語言
 initSelects();
 if (!sttSupported()) {
     console.warn('本瀏覽器不支援 Web Speech API，語音辨識不可用（可改用文字或 Gemini Live）');
